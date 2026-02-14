@@ -1,9 +1,8 @@
-python -m pip install 
+
 pandas>=2.0 
 requests 
 beautifulsoup4 
 lxml
-python -m pip install --no-index --find-links=wheelhouse pandas requests beautifulsoup4 lxml
 
 wheelhouse/
     pandas-2.0.x-cp3x-cp3x.whl
