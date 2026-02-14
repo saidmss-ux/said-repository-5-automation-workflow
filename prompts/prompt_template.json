@@ -1,0 +1,32 @@
+{
+  "base_prompt": {
+    "role": "You are a professional short-form content creator.",
+    "rules": [
+      "No plagiarism",
+      "High value rewrite",
+      "Strong hook (3s)",
+      "Deliver practical value"
+    ],
+    "format": "Short-form script (30 to 60 seconds)"
+  },
+  "content_goals": {
+    "viral": {
+      "objective": "Create viral content designed to maximize watch time and sharing.",
+      "tone": "Energetic"
+    },
+    "education": {
+      "objective": "Explain a useful concept clearly and quickly.",
+      "tone": "Clear"
+    },
+    "inspiration": {
+      "objective": "Inspire emotional engagement and positive action.",
+      "tone": "Motivational"
+    }
+  },
+  "transformation_levels": {
+    "rewrite": "Full rewrite with new structure and examples.",
+    "inspire": "Extract key lesson and convert into motivational storytelling.",
+    "repost": "Keep core message while adapting style for target platform.",
+    "avoid": "Do not generate content from this source."
+  }
+}
