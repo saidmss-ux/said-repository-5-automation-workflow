@@ -77,7 +77,19 @@ Le fichier `prompt_template.json` définit le rôle ("Professional content creat
 
 ### 6. Guide d'Implémentation pour Codex
 Pour toute nouvelle fonctionnalité, Codex doit suivre cette **TODO list** dérivée du plan validé :
-1.  **Environnement** : Utiliser Python 3.13, Pandas pour la manipulation de données, et `pathlib` pour la gestion des chemins.
+1.  **Environnement** : Utiliser Python 3.13, Pandas pour la manipulation de données, et `pathlib` pour la gestion des chemins
+   1.1.  ## Installation (Offline / container)
+
+   1.2. Ensure `wheelhouse/` directory exists with all required wheels.
+   1.3. Run:
+
+     ## Recommended setup
+
+      python -m venv .venv
+      source .venv/bin/activate
+      pip install -r requirements.txt
+
+.
 2.  **Instruction** : Chaque module doit être testable indépendamment avec un bloc `if __name__ == "__main__":`.
 3.  **Contrainte** : Ne jamais utiliser de chemins absolus (ex: `C:\...`) ; utiliser uniquement des chemins relatifs à la racine du projet.
 4.  **Validation** : Le pipeline doit s'arrêter proprement et loguer un message clair ("Aucun contenu trouvé") si les sources sont vides.
