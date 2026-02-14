@@ -1,4 +1,4 @@
-"""Main orchestration pipeline from source links to prompt-ready CSV outputs."""
+"""Main orchestration pipeline from sources CSV to prompt-ready outputs."""
 
 from pathlib import Path
 import pandas as pd
@@ -13,90 +13,89 @@ from modules.classifier import run_classifier
 from modules.generator import run_generator
 from modules.loader import run_loader
 from modules.normalizer import run_normalizer
-from modules.prompt_builder import run_prompt_builder
-from modules.utils import debug_head, ensure_dir, save_csv_safe
+from modules.prompt_builder import build_prompts
+from modules.utils import debug_head, ensure_dir, write_csv
+
+
+READY_COLUMNS = [
+    "source_url",
+    "content_url",
+    "niche",
+    "usage_strategy",
+    "lang",
+    "rights",
+    "origin_platform",
+    "prompt_template",
+    "processed",
+    "notes",
+    "source_file",
+    "priority_score",
+    "status",
+    "prompt_generated",
+    "content_ready",
+    "title_seed",
+    "caption_seed",
+]
+
+PROMPTS_COLUMNS = READY_COLUMNS + ["final_prompt", "raw_text"]
 
 
 def run_pipeline(
-    source_csv_path: Path = MASTER_SOURCES_CSV,
-    ready_output_path: Path = READY_TO_GENERATE_CSV,
-    prompts_output_path: Path = PROMPTS_READY_CSV,
-    template_path: Path = PROMPT_TEMPLATES_JSON,
+    source_csv: Path = MASTER_SOURCES_CSV,
+    template_path: Path | None = PROMPT_TEMPLATES_JSON,
+    ready_csv: Path = READY_TO_GENERATE_CSV,
+    prompts_csv: Path = PROMPTS_READY_CSV,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Run complete content automation pipeline and export outputs."""
-    print("[pipeline] 🚀 MASTER PIPELINE STARTED")
-
-    df = run_loader(source_csv_path)
+    """Run full pipeline and export final CSV files."""
+    print("[pipeline] START")
+    df = run_loader(source_csv)
     if df.empty:
-        print("[pipeline] ❌ Aucun contenu trouvé")
+        print("[pipeline] Aucun contenu trouvé")
         return pd.DataFrame(), pd.DataFrame()
 
     df = run_normalizer(df)
     df = run_classifier(df)
-    df = run_prompt_builder(df, template_path)
+    df = build_prompts(df, template_path=template_path)
     df = run_generator(df)
 
-    ready_columns = [
-        "source_url",
-        "content_url",
-        "niche",
-        "usage_strategy",
-        "lang",
-        "rights",
-        "origin_platform",
-        "prompt_template",
-        "processed",
-        "notes",
-        "source_file",
-        "priority_score",
-        "status",
-        "prompt_generated",
-        "content_ready",
-        "title_seed",
-        "caption_seed",
-    ]
-    prompts_columns = ready_columns + ["final_prompt", "raw_text"]
+    ready_df = df[[column for column in READY_COLUMNS if column in df.columns]].copy()
+    prompts_df = df[[column for column in PROMPTS_COLUMNS if column in df.columns]].copy()
 
-    ready_df = df[[column for column in ready_columns if column in df.columns]].copy()
-    prompts_df = df[[column for column in prompts_columns if column in df.columns]].copy()
+    ensure_dir(ready_csv.parent)
+    write_csv(ready_df, ready_csv)
+    write_csv(prompts_df, prompts_csv)
 
-    ensure_dir(ready_output_path.parent)
-    save_csv_safe(ready_df, ready_output_path)
-    save_csv_safe(prompts_df, prompts_output_path)
-
-    debug_head(ready_df, "ready_to_generate preview")
-    debug_head(prompts_df, "prompts_ready preview")
-
-    print("[pipeline] ✅ PIPELINE TERMINÉ")
+    debug_head(ready_df, "ready_to_generate head(5)")
+    debug_head(prompts_df, "prompts_ready head(5)")
+    print("[pipeline] END")
     return ready_df, prompts_df
 
 
-def run_demo_with_10_rows() -> None:
-    """Create 10 demo rows and run the full pipeline."""
-    print("[pipeline] Running demo with 10 fictive rows")
+def run_demo_10_rows() -> None:
+    """Generate demo dataset with 10 rows and execute pipeline."""
     ensure_dir(MASTER_SOURCES_CSV.parent)
+    demo_rows = []
 
-    demo_rows = [
-        {
-            "source_url": f"https://youtube.com/watch?v=video{i}",
-            "niche": "MOTIVATION" if i % 2 == 0 else "BUSINESS",
-            "usage_strategy": "viral" if i % 3 != 0 else "education",
-            "lang": "FR" if i % 2 == 0 else "EN",
-            "rights": "REWRITE_REQUIRED" if i % 4 != 0 else "INSPIRE_ONLY",
-            "origin_platform": "",
-            "prompt_template": "default",
-            "processed": False,
-            "notes": f"demo-row-{i}",
-            "source_file": "master_sources.csv",
-        }
-        for i in range(1, 11)
-    ]
+    for index in range(1, 11):
+        demo_rows.append(
+            {
+                "source_url": f"https://youtube.com/watch?v=video{index}",
+                "niche": "MOTIVATION" if index % 2 == 0 else "BUSINESS",
+                "usage_strategy": "education" if index % 3 == 0 else "viral",
+                "lang": "FR" if index % 2 == 0 else "EN",
+                "rights": "INSPIRE_ONLY" if index % 4 == 0 else "REWRITE_REQUIRED",
+                "origin_platform": "",
+                "prompt_template": "default",
+                "processed": False,
+                "notes": f"demo-row-{index}",
+                "source_file": MASTER_SOURCES_CSV.name,
+            }
+        )
 
     pd.DataFrame(demo_rows).to_csv(MASTER_SOURCES_CSV, index=False, encoding="utf-8")
-    print(f"[pipeline] Demo source written: {MASTER_SOURCES_CSV}")
-
+    print(f"[pipeline] Demo source generated: {MASTER_SOURCES_CSV}")
     run_pipeline()
 
 
 if __name__ == "__main__":
-    run_demo_with_10_rows()
+    run_demo_10_rows()

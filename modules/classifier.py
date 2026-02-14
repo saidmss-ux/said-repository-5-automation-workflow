@@ -1,4 +1,4 @@
-"""Deterministic classification rules for niche, language, rights, and priority."""
+"""Deterministic classification logic for platform, score, and status."""
 
 import re
 import pandas as pd
@@ -7,7 +7,7 @@ from modules.utils import debug_head
 
 
 def infer_origin_platform(content_url: str) -> str:
-    """Infer origin platform enum from URL."""
+    """Infer platform enum from URL."""
     url = (content_url or "").lower()
     if "youtube" in url or "youtu.be" in url:
         return "YOUTUBE"
@@ -18,36 +18,26 @@ def infer_origin_platform(content_url: str) -> str:
     return "OTHER"
 
 
-def normalize_lang(lang: str | None) -> str:
-    """Normalize language to FR/EN/OTHER with FR default."""
-    value = (lang or "").strip().upper()
-    if value in {"FR", "EN"}:
-        return value
-    if value == "":
-        return "FR"
-    return "OTHER"
-
-
 def normalize_rights(rights: str | None) -> str:
-    """Normalize rights values to allowed enum."""
-    value = (rights or "").strip().upper()
-    allowed = {"FREE_REPOST", "REWRITE_REQUIRED", "INSPIRE_ONLY", "AVOID"}
-    if value in allowed:
-        return value
-    return "REWRITE_REQUIRED"
+    """Normalize rights into allowed enum values."""
+    mapping = {
+        "FREE_REPOST": "FREE_REPOST",
+        "REWRITE_REQUIRED": "REWRITE_REQUIRED",
+        "INSPIRE_ONLY": "INSPIRE_ONLY",
+        "AVOID": "AVOID",
+    }
+    return mapping.get((rights or "").strip().upper(), "REWRITE_REQUIRED")
 
 
-def normalize_usage_strategy(usage_strategy: str | None) -> str:
-    """Normalize usage strategy with viral default."""
-    value = (usage_strategy or "").strip().lower()
+def normalize_strategy(usage_strategy: str | None) -> str:
+    """Normalize strategy into allowed values."""
     allowed = {"viral", "education", "inspiration"}
-    if value in allowed:
-        return value
-    return "viral"
+    strategy = (usage_strategy or "").strip().lower()
+    return strategy if strategy in allowed else "viral"
 
 
 def infer_niche(niche: str | None, raw_text: str | None) -> str:
-    """Infer niche from explicit value or keyword matching."""
+    """Infer niche from explicit value or raw text keywords."""
     explicit = (niche or "").strip().upper()
     if explicit:
         return explicit
@@ -57,15 +47,15 @@ def infer_niche(niche: str | None, raw_text: str | None) -> str:
         return "BUSINESS"
     if re.search(r"health|fitness|wellness", text):
         return "HEALTH"
-    if re.search(r"story|histoire|emotion", text):
+    if re.search(r"story|emotion|histoire", text):
         return "STORY"
-    if re.search(r"learn|education|tutorial", text):
+    if re.search(r"education|learn|tutorial", text):
         return "EDUCATION"
     return "MOTIVATION"
 
 
 def compute_priority_score(row: pd.Series) -> int:
-    """Compute score (0-100) from niche/lang/rights."""
+    """Compute deterministic priority score between 0 and 100."""
     score = 30
     if row.get("niche") in {"MOTIVATION", "BUSINESS"}:
         score += 25
@@ -83,43 +73,33 @@ def compute_priority_score(row: pd.Series) -> int:
 
 
 def run_classifier(df: pd.DataFrame) -> pd.DataFrame:
-    """Apply deterministic classification rules."""
-    print("[classifier] Classifying records")
-    if df.empty:
-        print("[classifier] Empty input DataFrame")
-        return df
-
+    """Run classifier stage and print debug preview."""
+    print("[classifier] Running deterministic classification")
     out = df.copy()
-    out["origin_platform"] = out.get("origin_platform", "").astype(str)
     out["origin_platform"] = out.apply(
-        lambda row: row["origin_platform"].strip().upper() or infer_origin_platform(row.get("content_url", "")),
+        lambda row: (str(row.get("origin_platform", "")).strip().upper() or infer_origin_platform(row.get("content_url", ""))),
         axis=1,
     )
-    out["lang"] = out["lang"].apply(normalize_lang)
     out["rights"] = out["rights"].apply(normalize_rights)
-    out["usage_strategy"] = out["usage_strategy"].apply(normalize_usage_strategy)
-    out["niche"] = out.apply(lambda row: infer_niche(row.get("niche", ""), row.get("raw_text", "")), axis=1)
+    out["usage_strategy"] = out["usage_strategy"].apply(normalize_strategy)
+    out["niche"] = out.apply(lambda row: infer_niche(row.get("niche"), row.get("raw_text")), axis=1)
     out["priority_score"] = out.apply(compute_priority_score, axis=1)
-
-    out["status"] = out.apply(
-        lambda row: "FILTERED" if row.get("rights") == "AVOID" else "READY_TO_GENERATE", axis=1
-    )
+    out["status"] = out["rights"].apply(lambda value: "FILTERED" if value == "AVOID" else "READY_TO_GENERATE")
 
     debug_head(out, "classifier output")
     return out
 
 
 if __name__ == "__main__":
-    sample = pd.DataFrame(
+    sample_df = pd.DataFrame(
         {
-            "content_url": ["https://youtube.com/watch?v=1", "https://example.com/post"],
+            "content_url": ["https://youtube.com/watch?v=1", "https://example.com/a"],
             "niche": ["", ""],
-            "lang": ["fr", "en"],
+            "lang": ["FR", "EN"],
             "rights": ["", "INSPIRE_ONLY"],
             "usage_strategy": ["viral", "education"],
-            "raw_text": ["business mindset tips", "story and emotion"],
+            "raw_text": ["business tips", "story emotion"],
             "origin_platform": ["", ""],
         }
     )
-    result = run_classifier(sample)
-    debug_head(result, "classifier self-test")
+    debug_head(run_classifier(sample_df), "classifier self-test")
