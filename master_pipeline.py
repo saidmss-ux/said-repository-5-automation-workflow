@@ -30,14 +30,33 @@ READY_COLUMNS = [
     "notes",
     "source_file",
     "priority_score",
+    "manual_score",
+    "manual_priority_score",
+    "blended_priority_score",
+    "reviewer_decision",
+    "reviewer_notes",
     "status",
     "prompt_generated",
+    "prompt_quality_score",
     "content_ready",
     "title_seed",
     "caption_seed",
+    "ai_status",
 ]
 
-PROMPTS_COLUMNS = READY_COLUMNS + ["final_prompt", "raw_text"]
+PROMPTS_COLUMNS = READY_COLUMNS + [
+    "final_prompt",
+    "prompt_quality_flags",
+    "raw_text",
+    "ai_enhancement_payload",
+]
+
+
+def sort_for_manual_review(df: pd.DataFrame) -> pd.DataFrame:
+    """Sort output by blended score descending for human review."""
+    if "blended_priority_score" not in df.columns:
+        return df
+    return df.sort_values(by=["blended_priority_score", "priority_score"], ascending=False).reset_index(drop=True)
 
 
 def run_pipeline(
@@ -55,8 +74,9 @@ def run_pipeline(
 
     df = run_normalizer(df)
     df = run_classifier(df)
-    df = build_prompts(df, template_path=template_path)
+    df = build_prompts(df, template_path=template_path, enable_ai_prep=True)
     df = run_generator(df)
+    df = sort_for_manual_review(df)
 
     ready_df = df[[column for column in READY_COLUMNS if column in df.columns]].copy()
     prompts_df = df[[column for column in PROMPTS_COLUMNS if column in df.columns]].copy()
@@ -84,6 +104,9 @@ def run_demo_10_rows() -> None:
                 "usage_strategy": "education" if index % 3 == 0 else "viral",
                 "lang": "FR" if index % 2 == 0 else "EN",
                 "rights": "INSPIRE_ONLY" if index % 4 == 0 else "REWRITE_REQUIRED",
+                "manual_score": 92 if index in {2, 6} else "",
+                "reviewer_decision": "SELECT" if index in {2, 6} else "PENDING",
+                "reviewer_notes": "High potential" if index in {2, 6} else "",
                 "origin_platform": "",
                 "prompt_template": "default",
                 "processed": False,

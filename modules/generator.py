@@ -1,5 +1,6 @@
 """Prepare generation payload fields for external AI integration."""
 
+import json
 import pandas as pd
 
 from modules.utils import debug_head
@@ -18,6 +19,22 @@ def prepare_generation_fields(row: pd.Series) -> dict:
     }
 
 
+def prepare_ai_enhancement_payload(row: pd.Series) -> str:
+    """Prepare an AI-ready payload JSON string for prompt enhancement."""
+    payload = {
+        "input_prompt": row.get("final_prompt", ""),
+        "goal": "Improve hook quality, clarity, and call-to-action while preserving meaning.",
+        "constraints": ["No plagiarism", "Keep source attribution", "Keep language consistency"],
+        "metadata": {
+            "niche": row.get("niche", "MOTIVATION"),
+            "lang": row.get("lang", "FR"),
+            "usage_strategy": row.get("usage_strategy", "viral"),
+            "blended_priority_score": row.get("blended_priority_score", 0),
+        },
+    }
+    return json.dumps(payload, ensure_ascii=False)
+
+
 def build_generation_payload(df: pd.DataFrame) -> pd.DataFrame:
     """Add generation helper columns to DataFrame."""
     out = df.copy()
@@ -28,6 +45,9 @@ def build_generation_payload(df: pd.DataFrame) -> pd.DataFrame:
 
     if "content_ready" not in out.columns:
         out["content_ready"] = out.get("prompt_generated", False)
+
+    out["ai_enhancement_payload"] = out.apply(prepare_ai_enhancement_payload, axis=1)
+    out["ai_status"] = out["content_ready"].apply(lambda ready: "READY_FOR_AI" if ready else "SKIPPED")
 
     return out
 
@@ -47,6 +67,10 @@ if __name__ == "__main__":
             "niche": ["BUSINESS"],
             "lang": ["FR"],
             "prompt_generated": [True],
+            "content_ready": [True],
+            "final_prompt": ["ROLE: creator"],
+            "usage_strategy": ["viral"],
+            "blended_priority_score": [75],
         }
     )
     debug_head(run_generator(sample_df), "generator self-test")

@@ -1,4 +1,4 @@
-"""Deterministic classification logic for platform, score, and status."""
+"""Deterministic classification logic with manual scoring support."""
 
 import re
 import pandas as pd
@@ -72,19 +72,53 @@ def compute_priority_score(row: pd.Series) -> int:
     return max(0, min(score, 100))
 
 
+def add_manual_scoring_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Add manual scoring and reviewer columns if missing."""
+    out = df.copy()
+    if "manual_score" not in out.columns:
+        out["manual_score"] = ""
+    if "reviewer_decision" not in out.columns:
+        out["reviewer_decision"] = "PENDING"
+    if "reviewer_notes" not in out.columns:
+        out["reviewer_notes"] = ""
+
+    manual_values = pd.to_numeric(out["manual_score"], errors="coerce")
+    out["manual_priority_score"] = manual_values.fillna(out["priority_score"]).astype(int)
+    return out
+
+
+def compute_blended_score(row: pd.Series) -> int:
+    """Blend automated and manual scores for final ranking."""
+    auto_score = int(row.get("priority_score", 0))
+    manual_score = int(row.get("manual_priority_score", auto_score))
+    blended = int((auto_score * 0.6) + (manual_score * 0.4))
+    return max(0, min(blended, 100))
+
+
 def run_classifier(df: pd.DataFrame) -> pd.DataFrame:
     """Run classifier stage and print debug preview."""
     print("[classifier] Running deterministic classification")
     out = df.copy()
+
     out["origin_platform"] = out.apply(
-        lambda row: (str(row.get("origin_platform", "")).strip().upper() or infer_origin_platform(row.get("content_url", ""))),
+        lambda row: (
+            str(row.get("origin_platform", "")).strip().upper()
+            or infer_origin_platform(row.get("content_url", ""))
+        ),
         axis=1,
     )
     out["rights"] = out["rights"].apply(normalize_rights)
     out["usage_strategy"] = out["usage_strategy"].apply(normalize_strategy)
-    out["niche"] = out.apply(lambda row: infer_niche(row.get("niche"), row.get("raw_text")), axis=1)
+    out["niche"] = out.apply(
+        lambda row: infer_niche(row.get("niche"), row.get("raw_text")), axis=1
+    )
     out["priority_score"] = out.apply(compute_priority_score, axis=1)
-    out["status"] = out["rights"].apply(lambda value: "FILTERED" if value == "AVOID" else "READY_TO_GENERATE")
+    out = add_manual_scoring_columns(out)
+    out["blended_priority_score"] = out.apply(compute_blended_score, axis=1)
+
+    out["status"] = out["rights"].apply(
+        lambda value: "FILTERED" if value == "AVOID" else "READY_TO_GENERATE"
+    )
 
     debug_head(out, "classifier output")
     return out
@@ -100,6 +134,7 @@ if __name__ == "__main__":
             "usage_strategy": ["viral", "education"],
             "raw_text": ["business tips", "story emotion"],
             "origin_platform": ["", ""],
+            "manual_score": [90, ""],
         }
     )
     debug_head(run_classifier(sample_df), "classifier self-test")
