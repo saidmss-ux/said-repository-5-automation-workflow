@@ -37,7 +37,7 @@ def load_templates(template_path: Path | None = None) -> dict:
 
 
 def validate_template_contract(templates: dict) -> dict:
-    """Validate required template sections and base shape."""
+    """Validate required template sections and base shape with explicit errors."""
     required_sections = ["base_prompt", "content_goals", "transformation_levels"]
     for section in required_sections:
         if section not in templates:
@@ -132,13 +132,13 @@ def apply_prompt_quality_rules(prompt_text: str) -> dict:
     if len(prompt_text) < 180:
         flags.append("prompt_too_short")
         score -= 25
-    if not re.search(r"\bROLE:\b", prompt_text):
+    if not re.search(r"ROLE:", prompt_text):
         flags.append("missing_role")
         score -= 20
-    if not re.search(r"\bOBJECTIVE:\b", prompt_text):
+    if not re.search(r"OBJECTIVE:", prompt_text):
         flags.append("missing_objective")
         score -= 20
-    if not re.search(r"\bSOURCE:\b", prompt_text):
+    if not re.search(r"SOURCE:", prompt_text):
         flags.append("missing_source")
         score -= 20
 

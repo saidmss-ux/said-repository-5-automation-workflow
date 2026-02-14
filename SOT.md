@@ -1,97 +1,171 @@
-Voici la **Source of Truth (SoT)** officielle pour le projet **automation_ia**, conçue pour servir de référence unique à toute future implémentation ou automatisation via Codex.
+# Source of Truth (SOT) — automation_ia
 
-### 1. Vision et Stratégie du Projet
-L'objectif est de créer un moteur de contenu automatisé capable de collecter, qualifier et préparer des publications pour les réseaux sociaux afin de générer des revenus. 
+Ce document est la référence fonctionnelle unique pour le pipeline `generation_prompts`.
 
-*   **Philosophie "Content is Content"** : Le contenu est traité de manière agnostique vis-à-vis de la plateforme d'origine (YouTube, TikTok, Facebook) pour être redistribué là où l'audience se trouve.
-*   **Modèle Hybride** : L'automatisation s'arrête à la préparation intelligente (liens + prompts). La création finale et la validation restent le fruit d'une collaboration entre l'humain et l'IA générative externe.
-*   **Architecture "DB-Ready"** : Le système utilise actuellement des fichiers CSV comme une base de données plate, structurée de manière à être migrée vers SQL sans refonte du code.
+## 1. Vision et stratégie
+
+L'objectif est de créer un moteur de contenu automatisé capable de collecter, qualifier et préparer des publications sociales.
+
+- **Philosophie "Content is Content"**: le contenu est agnostique à la plateforme source.
+- **Modèle hybride**: l’automatisation prépare les liens + prompts, l’humain valide et l’IA externe finalise.
+- **Architecture DB-ready**: stockage CSV structuré, migration SQL possible sans refonte majeure.
 
 ---
 
-### 2. Arborescence Officielle du Projet
-Cette structure de fichiers est la carte officielle du projet pour garantir la modularité et éviter la dette technique :
+## 2. Arborescence de référence
 
 ```text
 automation_ia/
 ├── data/
-│   ├── source/           # Sources brutes (master_sources.csv)
-│   ├── generated/        # Sorties finales (prompts_ready.csv)
-│   └── trends_input/     # Fichiers texte pour le trend_loader
-├── modules/              # Logique métier (importable par le pipeline)
+│   ├── source/                 # master_sources.csv
+│   ├── generated/              # ready_to_generate.csv / prompts_ready.csv
+│   └── trends_input/           # (optionnel) inputs trends
+├── modules/
 │   ├── __init__.py
-│   ├── loader.py         # Chargement des données
-│   ├── normalizer.py     # Standardisation des colonnes
-│   ├── classifier.py     # Niche, Langue, Droits
-│   ├── prompt_builder.py # Assemblage des prompts finaux
-│   └── utils.py          # Fonctions I/O communes
+│   ├── loader.py
+│   ├── normalizer.py
+│   ├── classifier.py
+│   ├── prompt_builder.py
+│   ├── generator.py
+│   └── utils.py
 ├── prompts/
-│   └── prompt_template.json # Cerveau éditorial et templates
-├── master_pipeline.py    # Point d'entrée unique
-└── README.md
+│   ├── prompt_templates.json   # template principal
+│   └── prompt_template.json    # alias compatibilité
+├── scripts/
+│   └── validate_artifacts.py
+├── master_pipeline.py
+├── README.md
+└── SKILL.md
 ```
 
 ---
 
-### 3. Pipeline de Données (Workflow)
-Le workflow suit un ordre strict de transformation des données :
+## 3. Workflow pipeline end-to-end
 
-1.  **Loader** : Charge les liens depuis `data/source/master_sources.csv` et évite les doublons.
-2.  **Normalizer** : Convertit les colonnes d'entrée en un schéma canonique, avec `content_url` comme clé de vérité.
-3.  **Classifier** : Attribue une niche, une langue et un niveau de droits selon des règles déterministes (sans IA à ce stade).
-4.  **Scorer (Optionnel)** : Calcule une priorité (`priority_score`) basée sur la niche et la langue pour trier les meilleurs contenus.
-5.  **Prompt Builder** : Injecte les métadonnées dans les templates de `prompt_template.json`.
-6.  **Exporter** : Génère le fichier final `prompts_ready.csv` et, optionnellement, des fichiers `.txt` individuels.
+Ordre strict de transformation:
 
----
+1. **Loader**
+   - Charge `data/source/master_sources.csv`
+   - Valide colonnes minimales
+   - Déduplique (`source_url`)
 
-### 4. Schéma de Données (Table : `content_sources`)
-Ceci est le contrat de données que chaque module doit respecter :
+2. **Normalizer**
+   - Produit `content_url` (clé canonique)
+   - Normalise les colonnes texte et enums
 
-| Champ | Type | Description |
-| :--- | :--- | :--- |
-| `id` | UUID | Identifiant unique du contenu. |
-| `source_url` | Text | URL d'origine du contenu. |
-| `origin_platform` | Enum | YOUTUBE, TIKTOK, FACEBOOK, OTHER. |
-| `niche` | Enum | MOTIVATION, BUSINESS, HEALTH, STORY, EDUCATION, etc. |
-| `lang` | Enum | FR, EN, etc. |
-| `rights` | Enum | FREE_REPOST, REWRITE_REQUIRED, INSPIRE_ONLY, AVOID. |
-| `status` | Enum | RAW, FILTERED, READY_TO_GENERATE, GENERATED, PUBLISHED. |
-| `priority_score` | Int | Score de 0 à 100 pour la sélection manuelle. |
-| `final_prompt` | Text | Le prompt complet prêt pour l'IA générative externe. |
+3. **Classifier**
+   - Attribue `origin_platform`, `niche`, `lang`, `rights`
+   - Calcule `priority_score`
+   - Calcule score manuel fusionné (`blended_priority_score`)
 
----
+4. **Prompt Builder**
+   - Charge templates JSON
+   - Injecte métadonnées (`niche`, `lang`, `rights`, `usage_strategy`)
+   - Produit `final_prompt`
 
-### 5. Bibliothèque de Prompts et Règles Métier
+5. **Generator**
+   - Prépare champs intermédiaires (title/caption/raw_text)
+   - Prépare payload IA externe (`ai_enhancement_payload`)
 
-#### Logique des Niches (Public-First)
-Les niches sont choisies pour leur potentiel de monétisation et leur facilité de transformation par l'IA :
-*   **MOTIVATION** : Focus discipline et mentalité (Haut potentiel).
-*   **BUSINESS** : Mindset entrepreneur et finance (Fort CPM).
-*   **STORY** : Histoires humaines et émotions brutes.
-
-#### Templates de Prompts (Structure JSON)
-Le fichier `prompt_template.json` définit le rôle ("Professional content creator"), les contraintes (Pas de plagiat, hook de 3s) et les objectifs par niche (Viral, Education, Inspiration).
+6. **Exporter**
+   - Écrit:
+     - `data/generated/ready_to_generate.csv`
+     - `data/generated/prompts_ready.csv`
 
 ---
 
-### 6. Guide d'Implémentation pour Codex
-Pour toute nouvelle fonctionnalité, Codex doit suivre cette **TODO list** dérivée du plan validé :
-1.  **Environnement** : Utiliser Python 3.13, Pandas pour la manipulation de données, et `pathlib` pour la gestion des chemins
-   1.1.  ## Installation (Offline / container)
+## 4. Statuts contrôlés
 
-   1.2. Ensure `wheelhouse/` directory exists with all required wheels.
-   1.3. Run:
+Statuts autorisés du pipeline:
 
-     ## Recommended setup
+- `RAW`
+- `FILTERED`
+- `READY_TO_GENERATE`
+- `GENERATED`
+- `PUBLISHED`
 
-      python -m venv .venv
-      source .venv/bin/activate
-      pip install -r requirements.txt
+Conventions d’usage:
+- `FILTERED`: source non exploitable (ex: `rights=AVOID`).
+- `READY_TO_GENERATE`: prompt prêt pour IA externe.
+- `GENERATED`: contenu textuel créé (hors scope actuel).
+- `PUBLISHED`: contenu diffusé (hors scope actuel).
 
-.
-2.  **Instruction** : Chaque module doit être testable indépendamment avec un bloc `if __name__ == "__main__":`.
-3.  **Contrainte** : Ne jamais utiliser de chemins absolus (ex: `C:\...`) ; utiliser uniquement des chemins relatifs à la racine du projet.
-4.  **Validation** : Le pipeline doit s'arrêter proprement et loguer un message clair ("Aucun contenu trouvé") si les sources sont vides.
+---
 
-**Statut du projet** : Stable V1. Prêt pour la phase de production de contenu manuelle assistée par IA.
+## 5. Schéma de données (contrat)
+
+### 5.1 Colonnes minimales entrée (`master_sources.csv`)
+
+- `source_url`
+- `niche`
+- `usage_strategy`
+- `lang`
+- `rights`
+
+### 5.2 Colonnes d’entrée recommandées
+
+- `origin_platform`
+- `prompt_template`
+- `processed`
+- `notes`
+- `source_file`
+- `manual_score`
+- `reviewer_decision`
+- `reviewer_notes`
+
+### 5.3 Colonnes de sortie (principales)
+
+- **ready_to_generate.csv**
+  - `source_url`, `content_url`, `niche`, `usage_strategy`, `lang`, `rights`
+  - `priority_score`, `manual_priority_score`, `blended_priority_score`
+  - `status`, `prompt_generated`, `content_ready`, `ai_status`
+
+- **prompts_ready.csv**
+  - toutes les colonnes ci-dessus +
+  - `final_prompt`, `prompt_quality_score`, `prompt_quality_flags`, `ai_enhancement_payload`
+
+---
+
+## 6. Conventions CSV/JSON
+
+- Encodage: **UTF-8**.
+- Délimiteur CSV: standard `,`.
+- Noms de colonnes en `snake_case`.
+- Valeurs enum en majuscules pour `niche`, `lang`, `rights`, `status`.
+- Warnings attendus:
+  - colonnes optionnelles absentes -> fallback par défaut.
+  - colonnes minimales absentes -> erreur explicite.
+
+---
+
+## 7. Templates prompts
+
+Le fichier `prompts/prompt_templates.json` définit:
+- `base_prompt` (role/rules/format)
+- `content_goals`
+- `transformation_levels`
+
+Le fichier `prompts/prompt_template.json` doit rester un alias fonctionnel.
+
+---
+
+## 8. Règles d’implémentation
+
+1. Python 3.13 + Pandas + `pathlib.Path`.
+2. Chaque module est testable indépendamment (`__main__`).
+3. Pas de chemin absolu système.
+4. Si source vide: arrêt propre avec message `Aucun contenu trouvé`.
+5. Logs debug simples à chaque étape.
+
+---
+
+## 9. Validation attendue
+
+- `python -m py_compile ...`
+- `python scripts/validate_artifacts.py`
+- Exécution pipeline complète: `python master_pipeline.py` (environnement avec `pandas`)
+- Preview `head(5)` des sorties.
+
+---
+
+**Statut projet**: Stable V1+, prêt pour préparation de contenu assistée IA.
