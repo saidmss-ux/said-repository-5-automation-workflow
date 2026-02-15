@@ -75,6 +75,14 @@ Le pipeline lit `data/source/master_sources.csv` et produit:
 - `data/generated/ready_to_generate.csv`
 - `data/generated/prompts_ready.csv`
 
+
+## Module YouTube Scraping
+
+Un module dédié est disponible: `modules/youtube_scrap.py` (API YouTube + fallback HTML).
+
+- Exécution rapide: `python modules/youtube_scrap.py`
+- Manuel détaillé: `docs_youtube_scrap_manual.md`
+
 ## Validation
 
 ### Validation de syntaxe
