@@ -1,0 +1,11 @@
+source_url,niche,usage_strategy,lang,rights,manual_score,reviewer_decision,reviewer_notes,origin_platform,prompt_template,processed,notes,source_file
+https://youtube.com/watch?v=video1,BUSINESS,viral,EN,REWRITE_REQUIRED,,PENDING,, ,default,False,demo-row-1,master_sources.csv
+https://youtube.com/watch?v=video2,MOTIVATION,viral,FR,REWRITE_REQUIRED,92,SELECT,High potential, ,default,False,demo-row-2,master_sources.csv
+https://youtube.com/watch?v=video3,BUSINESS,education,EN,REWRITE_REQUIRED,,PENDING,, ,default,False,demo-row-3,master_sources.csv
+https://youtube.com/watch?v=video4,MOTIVATION,viral,FR,INSPIRE_ONLY,,PENDING,, ,default,False,demo-row-4,master_sources.csv
+https://youtube.com/watch?v=video5,BUSINESS,viral,EN,REWRITE_REQUIRED,,PENDING,, ,default,False,demo-row-5,master_sources.csv
+https://youtube.com/watch?v=video6,MOTIVATION,education,FR,REWRITE_REQUIRED,92,SELECT,High potential, ,default,False,demo-row-6,master_sources.csv
+https://youtube.com/watch?v=video7,BUSINESS,viral,EN,REWRITE_REQUIRED,,PENDING,, ,default,False,demo-row-7,master_sources.csv
+https://youtube.com/watch?v=video8,MOTIVATION,viral,FR,INSPIRE_ONLY,,PENDING,, ,default,False,demo-row-8,master_sources.csv
+https://youtube.com/watch?v=video9,BUSINESS,education,EN,REWRITE_REQUIRED,,PENDING,, ,default,False,demo-row-9,master_sources.csv
+https://youtube.com/watch?v=video10,MOTIVATION,viral,FR,REWRITE_REQUIRED,,PENDING,, ,default,False,demo-row-10,master_sources.csv
