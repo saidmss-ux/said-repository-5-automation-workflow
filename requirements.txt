@@ -1,0 +1,20 @@
+# Core data pipeline
+pandas>=2.0
+
+# Web/data acquisition utilities (present/future scraping integration)
+requests>=2.31
+beautifulsoup4>=4.12
+lxml>=4.9
+
+# Optional quality-of-life
+python-dateutil>=2.8
+
+# Notes:
+# - Use a virtual environment before installing dependencies.
+# - Optional extras (future):
+#   openai>=1.0
+#   httpx>=0.25
+#   playwright>=1.40
+
+# Optional API mode for YouTube Data API v3
+# google-api-python-client>=2.0

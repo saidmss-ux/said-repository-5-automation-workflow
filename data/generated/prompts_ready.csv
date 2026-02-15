@@ -1,0 +1,121 @@
+source_url,content_url,niche,usage_strategy,lang,rights,origin_platform,prompt_template,processed,notes,source_file,priority_score,manual_score,manual_priority_score,blended_priority_score,reviewer_decision,reviewer_notes,status,prompt_generated,prompt_quality_score,content_ready,title_seed,caption_seed,ai_status,final_prompt,prompt_quality_flags,raw_text,ai_enhancement_payload
+https://youtube.com/watch?v=video2,https://youtube.com/watch?v=video2,MOTIVATION,viral,FR,REWRITE_REQUIRED,,default,False,demo-row-2,master_sources.csv,85,92,92,87,SELECT,High potential,READY_TO_GENERATE,True,100,True,[MOTIVATION] Hook idea from https://youtube.com/watch?v=video2,Motivation | FR | Source: https://youtube.com/watch?v=video2,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Create viral content designed to maximize watch time and sharing.
+TONE: Energetic
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: MOTIVATION
+LANGUAGE: FR
+SOURCE: https://youtube.com/watch?v=video2
+PRIORITY_SCORE: 87
+EDITOR_NOTES: demo-row-2
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video2,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Create viral content designed to maximize watch time and sharing.\nTONE: Energetic\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: MOTIVATION\nLANGUAGE: FR\nSOURCE: https://youtube.com/watch?v=video2\nPRIORITY_SCORE: 87\nEDITOR_NOTES: demo-row-2\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""MOTIVATION"", ""lang"": ""FR"", ""usage_strategy"": ""viral"", ""blended_priority_score"": 87}}"
+https://youtube.com/watch?v=video6,https://youtube.com/watch?v=video6,MOTIVATION,education,FR,REWRITE_REQUIRED,,default,False,demo-row-6,master_sources.csv,85,92,92,87,SELECT,High potential,READY_TO_GENERATE,True,100,True,[MOTIVATION] Hook idea from https://youtube.com/watch?v=video6,Motivation | FR | Source: https://youtube.com/watch?v=video6,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Explain a useful concept clearly and quickly.
+TONE: Clear
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: MOTIVATION
+LANGUAGE: FR
+SOURCE: https://youtube.com/watch?v=video6
+PRIORITY_SCORE: 87
+EDITOR_NOTES: demo-row-6
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video6,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Explain a useful concept clearly and quickly.\nTONE: Clear\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: MOTIVATION\nLANGUAGE: FR\nSOURCE: https://youtube.com/watch?v=video6\nPRIORITY_SCORE: 87\nEDITOR_NOTES: demo-row-6\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""MOTIVATION"", ""lang"": ""FR"", ""usage_strategy"": ""education"", ""blended_priority_score"": 87}}"
+https://youtube.com/watch?v=video10,https://youtube.com/watch?v=video10,MOTIVATION,viral,FR,REWRITE_REQUIRED,,default,False,demo-row-10,master_sources.csv,85,,85,85,PENDING,,READY_TO_GENERATE,True,100,True,[MOTIVATION] Hook idea from https://youtube.com/watch?v=video10,Motivation | FR | Source: https://youtube.com/watch?v=video10,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Create viral content designed to maximize watch time and sharing.
+TONE: Energetic
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: MOTIVATION
+LANGUAGE: FR
+SOURCE: https://youtube.com/watch?v=video10
+PRIORITY_SCORE: 85
+EDITOR_NOTES: demo-row-10
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video10,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Create viral content designed to maximize watch time and sharing.\nTONE: Energetic\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: MOTIVATION\nLANGUAGE: FR\nSOURCE: https://youtube.com/watch?v=video10\nPRIORITY_SCORE: 85\nEDITOR_NOTES: demo-row-10\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""MOTIVATION"", ""lang"": ""FR"", ""usage_strategy"": ""viral"", ""blended_priority_score"": 85}}"
+https://youtube.com/watch?v=video4,https://youtube.com/watch?v=video4,MOTIVATION,viral,FR,INSPIRE_ONLY,,default,False,demo-row-4,master_sources.csv,80,,80,80,PENDING,,READY_TO_GENERATE,True,100,True,[MOTIVATION] Hook idea from https://youtube.com/watch?v=video4,Motivation | FR | Source: https://youtube.com/watch?v=video4,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Create viral content designed to maximize watch time and sharing.
+TONE: Energetic
+TRANSFORMATION: Extract key lesson and convert into motivational storytelling.
+NICHE: MOTIVATION
+LANGUAGE: FR
+SOURCE: https://youtube.com/watch?v=video4
+PRIORITY_SCORE: 80
+EDITOR_NOTES: demo-row-4
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video4,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Create viral content designed to maximize watch time and sharing.\nTONE: Energetic\nTRANSFORMATION: Extract key lesson and convert into motivational storytelling.\nNICHE: MOTIVATION\nLANGUAGE: FR\nSOURCE: https://youtube.com/watch?v=video4\nPRIORITY_SCORE: 80\nEDITOR_NOTES: demo-row-4\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""MOTIVATION"", ""lang"": ""FR"", ""usage_strategy"": ""viral"", ""blended_priority_score"": 80}}"
+https://youtube.com/watch?v=video8,https://youtube.com/watch?v=video8,MOTIVATION,viral,FR,INSPIRE_ONLY,,default,False,demo-row-8,master_sources.csv,80,,80,80,PENDING,,READY_TO_GENERATE,True,100,True,[MOTIVATION] Hook idea from https://youtube.com/watch?v=video8,Motivation | FR | Source: https://youtube.com/watch?v=video8,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Create viral content designed to maximize watch time and sharing.
+TONE: Energetic
+TRANSFORMATION: Extract key lesson and convert into motivational storytelling.
+NICHE: MOTIVATION
+LANGUAGE: FR
+SOURCE: https://youtube.com/watch?v=video8
+PRIORITY_SCORE: 80
+EDITOR_NOTES: demo-row-8
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video8,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Create viral content designed to maximize watch time and sharing.\nTONE: Energetic\nTRANSFORMATION: Extract key lesson and convert into motivational storytelling.\nNICHE: MOTIVATION\nLANGUAGE: FR\nSOURCE: https://youtube.com/watch?v=video8\nPRIORITY_SCORE: 80\nEDITOR_NOTES: demo-row-8\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""MOTIVATION"", ""lang"": ""FR"", ""usage_strategy"": ""viral"", ""blended_priority_score"": 80}}"
+https://youtube.com/watch?v=video1,https://youtube.com/watch?v=video1,BUSINESS,viral,EN,REWRITE_REQUIRED,,default,False,demo-row-1,master_sources.csv,65,,65,65,PENDING,,READY_TO_GENERATE,True,100,True,[BUSINESS] Hook idea from https://youtube.com/watch?v=video1,Business | EN | Source: https://youtube.com/watch?v=video1,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Create viral content designed to maximize watch time and sharing.
+TONE: Energetic
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: BUSINESS
+LANGUAGE: EN
+SOURCE: https://youtube.com/watch?v=video1
+PRIORITY_SCORE: 65
+EDITOR_NOTES: demo-row-1
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video1,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Create viral content designed to maximize watch time and sharing.\nTONE: Energetic\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: BUSINESS\nLANGUAGE: EN\nSOURCE: https://youtube.com/watch?v=video1\nPRIORITY_SCORE: 65\nEDITOR_NOTES: demo-row-1\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""BUSINESS"", ""lang"": ""EN"", ""usage_strategy"": ""viral"", ""blended_priority_score"": 65}}"
+https://youtube.com/watch?v=video3,https://youtube.com/watch?v=video3,BUSINESS,education,EN,REWRITE_REQUIRED,,default,False,demo-row-3,master_sources.csv,65,,65,65,PENDING,,READY_TO_GENERATE,True,100,True,[BUSINESS] Hook idea from https://youtube.com/watch?v=video3,Business | EN | Source: https://youtube.com/watch?v=video3,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Explain a useful concept clearly and quickly.
+TONE: Clear
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: BUSINESS
+LANGUAGE: EN
+SOURCE: https://youtube.com/watch?v=video3
+PRIORITY_SCORE: 65
+EDITOR_NOTES: demo-row-3
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video3,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Explain a useful concept clearly and quickly.\nTONE: Clear\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: BUSINESS\nLANGUAGE: EN\nSOURCE: https://youtube.com/watch?v=video3\nPRIORITY_SCORE: 65\nEDITOR_NOTES: demo-row-3\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""BUSINESS"", ""lang"": ""EN"", ""usage_strategy"": ""education"", ""blended_priority_score"": 65}}"
+https://youtube.com/watch?v=video5,https://youtube.com/watch?v=video5,BUSINESS,viral,EN,REWRITE_REQUIRED,,default,False,demo-row-5,master_sources.csv,65,,65,65,PENDING,,READY_TO_GENERATE,True,100,True,[BUSINESS] Hook idea from https://youtube.com/watch?v=video5,Business | EN | Source: https://youtube.com/watch?v=video5,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Create viral content designed to maximize watch time and sharing.
+TONE: Energetic
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: BUSINESS
+LANGUAGE: EN
+SOURCE: https://youtube.com/watch?v=video5
+PRIORITY_SCORE: 65
+EDITOR_NOTES: demo-row-5
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video5,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Create viral content designed to maximize watch time and sharing.\nTONE: Energetic\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: BUSINESS\nLANGUAGE: EN\nSOURCE: https://youtube.com/watch?v=video5\nPRIORITY_SCORE: 65\nEDITOR_NOTES: demo-row-5\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""BUSINESS"", ""lang"": ""EN"", ""usage_strategy"": ""viral"", ""blended_priority_score"": 65}}"
+https://youtube.com/watch?v=video7,https://youtube.com/watch?v=video7,BUSINESS,viral,EN,REWRITE_REQUIRED,,default,False,demo-row-7,master_sources.csv,65,,65,65,PENDING,,READY_TO_GENERATE,True,100,True,[BUSINESS] Hook idea from https://youtube.com/watch?v=video7,Business | EN | Source: https://youtube.com/watch?v=video7,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Create viral content designed to maximize watch time and sharing.
+TONE: Energetic
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: BUSINESS
+LANGUAGE: EN
+SOURCE: https://youtube.com/watch?v=video7
+PRIORITY_SCORE: 65
+EDITOR_NOTES: demo-row-7
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video7,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Create viral content designed to maximize watch time and sharing.\nTONE: Energetic\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: BUSINESS\nLANGUAGE: EN\nSOURCE: https://youtube.com/watch?v=video7\nPRIORITY_SCORE: 65\nEDITOR_NOTES: demo-row-7\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""BUSINESS"", ""lang"": ""EN"", ""usage_strategy"": ""viral"", ""blended_priority_score"": 65}}"
+https://youtube.com/watch?v=video9,https://youtube.com/watch?v=video9,BUSINESS,education,EN,REWRITE_REQUIRED,,default,False,demo-row-9,master_sources.csv,65,,65,65,PENDING,,READY_TO_GENERATE,True,100,True,[BUSINESS] Hook idea from https://youtube.com/watch?v=video9,Business | EN | Source: https://youtube.com/watch?v=video9,READY_FOR_AI,"ROLE: You are a professional short-form content creator.
+RULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value
+OBJECTIVE: Explain a useful concept clearly and quickly.
+TONE: Clear
+TRANSFORMATION: Full rewrite with new structure and examples.
+NICHE: BUSINESS
+LANGUAGE: EN
+SOURCE: https://youtube.com/watch?v=video9
+PRIORITY_SCORE: 65
+EDITOR_NOTES: demo-row-9
+FORMAT: Short-form script (30 to 60 seconds)
+AI_ENHANCEMENT_HINT: Improve hook + CTA",OK,Source from https://youtube.com/watch?v=video9,"{""input_prompt"": ""ROLE: You are a professional short-form content creator.\nRULES: No plagiarism; High value rewrite; Strong hook (3s); Deliver practical value\nOBJECTIVE: Explain a useful concept clearly and quickly.\nTONE: Clear\nTRANSFORMATION: Full rewrite with new structure and examples.\nNICHE: BUSINESS\nLANGUAGE: EN\nSOURCE: https://youtube.com/watch?v=video9\nPRIORITY_SCORE: 65\nEDITOR_NOTES: demo-row-9\nFORMAT: Short-form script (30 to 60 seconds)\nAI_ENHANCEMENT_HINT: Improve hook + CTA"", ""goal"": ""Improve hook quality, clarity, and call-to-action while preserving meaning."", ""constraints"": [""No plagiarism"", ""Keep source attribution"", ""Keep language consistency""], ""metadata"": {""niche"": ""BUSINESS"", ""lang"": ""EN"", ""usage_strategy"": ""education"", ""blended_priority_score"": 65}}"
