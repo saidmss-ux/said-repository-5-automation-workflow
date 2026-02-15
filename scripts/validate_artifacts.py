@@ -76,11 +76,40 @@ def check_generated_csv_outputs(repo_root: Path) -> None:
         )
 
 
+
+
+def check_master_sources_csv_contract(repo_root: Path) -> None:
+    """Check strict CSV contract for YouTube scraping bridge file."""
+    source_path = repo_root / "data" / "source" / "master_sources.csv"
+    required = [
+        "source_url",
+        "niche",
+        "lang",
+        "rights",
+        "usage_strategy",
+        "origin_platform",
+    ]
+
+    with source_path.open("r", encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file)
+        rows = list(reader)
+        cols = reader.fieldnames or []
+
+    missing = [col for col in required if col not in cols]
+    if missing:
+        raise ValueError(f"master_sources.csv missing required columns: {missing}")
+
+    print("[check] master_sources.csv contract OK")
+    print("[check] master_sources head(5):")
+    for row in rows[:5]:
+        print({k: row.get(k, "") for k in required})
+
 def main() -> None:
     """Run all artifact checks."""
     repo_root = Path(__file__).resolve().parent.parent
     check_template_alias_support(repo_root)
     check_generated_csv_outputs(repo_root)
+    check_master_sources_csv_contract(repo_root)
 
 
 if __name__ == "__main__":

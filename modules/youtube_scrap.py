@@ -17,6 +17,11 @@ import os
 import re
 import time
 
+try:
+    import requests
+except Exception:  # noqa: BLE001
+    requests = None
+
 
 YOUTUBE_BASE = "https://www.youtube.com"
 YOUTUBE_API_BASE = "https://www.googleapis.com/youtube/v3"
@@ -52,7 +57,17 @@ def load_runtime_config(api_key: str | None = None, env_var_name: str = "YOUTUBE
 
 def _http_get_json(url: str, headers: dict | None = None, timeout_s: int = 20) -> dict:
     """Perform GET and return JSON payload with explicit errors."""
-    request = Request(url, headers=headers or get_default_headers())
+    active_headers = headers or get_default_headers()
+
+    if requests is not None:
+        response = requests.get(url, headers=active_headers, timeout=timeout_s)
+        response.raise_for_status()
+        try:
+            return response.json()
+        except Exception as exc:  # noqa: BLE001
+            raise ValueError(f"[youtube_scrap] invalid JSON response from {url}") from exc
+
+    request = Request(url, headers=active_headers)
     with urlopen(request, timeout=timeout_s) as response:
         payload = response.read().decode("utf-8")
     try:
@@ -63,7 +78,14 @@ def _http_get_json(url: str, headers: dict | None = None, timeout_s: int = 20) -
 
 def _http_get_text(url: str, headers: dict | None = None, timeout_s: int = 20) -> str:
     """Perform GET and return text payload."""
-    request = Request(url, headers=headers or get_default_headers())
+    active_headers = headers or get_default_headers()
+
+    if requests is not None:
+        response = requests.get(url, headers=active_headers, timeout=timeout_s)
+        response.raise_for_status()
+        return response.text
+
+    request = Request(url, headers=active_headers)
     with urlopen(request, timeout=timeout_s) as response:
         return response.read().decode("utf-8", errors="replace")
 
