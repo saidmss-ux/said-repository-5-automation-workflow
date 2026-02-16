@@ -1,5 +1,24 @@
+Vision Architecture Globale markdown:
+                    ┌──────────────────┐
+                    │  queries_master  │
+                    └─────────┬────────┘
+                              │
+                     ┌────────▼────────┐
+                     │ youtube_provider │
+                     └────────┬────────┘
+                              │
+                     ┌────────▼────────┐
+                     │ quality_engine  │
+                     └────────┬────────┘
+                              │
+                     ┌────────▼────────┐
+                     │ master_source   │
+                     └────────┬────────┘
+                              │
+                       master_source.csv
+
 Architecture recommandée v1
-youtube_pipeline/
+youtube_provider/
 │
 ├── config.py              # Paramètres API + filtres qualité
 ├── queries.txt            # Liste des requêtes (modifiable sans toucher au code)
