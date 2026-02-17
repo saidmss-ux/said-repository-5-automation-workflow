@@ -83,6 +83,42 @@ Un module dédié est disponible: `modules/youtube_scrap.py` (API YouTube + fall
 - Exécution rapide: `python modules/youtube_scrap.py`
 - Manuel détaillé: `docs_youtube_scrap_manual.md`
 
+
+## Provider YouTube Standalone (master_source)
+
+Le provider canonique est `providers/youtube_provider.py`.
+
+### Entrées structurées (queries.csv)
+
+Préparez `queries/youtube_queries.csv` avec:
+
+```csv
+query,priority,max_results,min_views
+python automation,HIGH,15,1000
+youtube shorts growth,MEDIUM,10,500
+```
+
+### Exécution standalone
+
+```bash
+python providers/youtube_provider.py
+```
+
+Résultats:
+- retour normalisé en mémoire (`fetch_youtube_data`),
+- export auto de télémétrie dans `telemetry/` (`.json` + `.csv`),
+- affichage console d'un aperçu des résultats.
+
+### API key
+
+```bash
+export YOUTUBE_API_KEY="<your_api_key>"
+```
+
+### Documentation complète
+
+Voir `providers/youtube_provider_docs.md`.
+
 ## Validation
 
 ### Validation de syntaxe
