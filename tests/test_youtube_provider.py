@@ -1,16 +1,19 @@
-"""Basic tests for providers.youtube_provider with mocked API responses."""
+"""Tests for providers.youtube_provider with mocked API responses."""
 
 from __future__ import annotations
 
+from pathlib import Path
+import tempfile
 import unittest
 
-import providers.youtube_provider as youtube_provider
 from providers.youtube_provider import (
     MemoryCache,
     YouTubeApiClient,
     YouTubeProviderConfig,
     YouTubeQuotaExceededError,
+    export_telemetry,
     fetch_youtube_data,
+    load_queries,
 )
 
 
@@ -45,7 +48,7 @@ class FakeVideosResource:
 
 class FakeQuotaRequest:
     def execute(self):
-        raise youtube_provider.HttpError("quotaExceeded")
+        raise RuntimeError("quotaExceeded")
 
 
 class FakeQuotaSearchResource:
@@ -94,7 +97,11 @@ class YouTubeProviderTests(unittest.TestCase):
                         "publishedAt": "2024-01-01T00:00:00Z",
                         "description": "desc",
                     },
-                    "statistics": {"viewCount": "100", "likeCount": "5", "commentCount": "2"},
+                    "statistics": {
+                        "viewCount": "100",
+                        "likeCount": "5",
+                        "commentCount": "2",
+                    },
                 },
                 {
                     "id": "vid2",
@@ -104,7 +111,11 @@ class YouTubeProviderTests(unittest.TestCase):
                         "publishedAt": "2024-01-02T00:00:00Z",
                         "description": "desc2",
                     },
-                    "statistics": {"viewCount": "250", "likeCount": "10", "commentCount": "4"},
+                    "statistics": {
+                        "viewCount": "250",
+                        "likeCount": "10",
+                        "commentCount": "4",
+                    },
                 },
             ]
         }
@@ -116,15 +127,24 @@ class YouTubeProviderTests(unittest.TestCase):
         )
 
     def test_fetch_youtube_data_returns_normalized_rows(self):
-        rows = fetch_youtube_data(["automation"], client=self.client)
+        rows = fetch_youtube_data(
+            [{"query": "automation", "priority": "HIGH", "max_results": 10, "min_views": 0}],
+            client=self.client,
+            telemetry_path=Path("telemetry") / "test_fetch.json",
+        )
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[0]["platform"], "youtube")
         self.assertIn("source_extra", rows[0])
         self.assertIsInstance(rows[0]["views"], int)
 
     def test_cache_reduces_search_calls(self):
-        first = self.client.search_video_ids("automation")
-        second = self.client.search_video_ids("automation")
+        telemetry = {}
+        first = self.client.search_video_ids(
+            {"query": "automation", "max_results": 10, "max_pages": 1}, telemetry
+        )
+        second = self.client.search_video_ids(
+            {"query": "automation", "max_results": 10, "max_pages": 1}, telemetry
+        )
         self.assertEqual(first, second)
         self.assertEqual(self.client.service.search().calls, 1)
 
@@ -136,7 +156,34 @@ class YouTubeProviderTests(unittest.TestCase):
         )
 
         with self.assertRaises(YouTubeQuotaExceededError):
-            fetch_youtube_data(["automation"], client=quota_client)
+            fetch_youtube_data(
+                [{"query": "automation", "priority": "HIGH", "max_results": 5, "min_views": 0}],
+                client=quota_client,
+            )
+
+    def test_load_queries_and_min_views_filter(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            csv_path = Path(tmpdir) / "queries.csv"
+            csv_path.write_text(
+                "query,priority,max_results,min_views\n"
+                "automation,HIGH,10,200\n",
+                encoding="utf-8",
+            )
+            queries = load_queries(str(csv_path))
+            rows = fetch_youtube_data(
+                queries,
+                client=self.client,
+                telemetry_path=Path(tmpdir) / "telemetry.json",
+            )
+            self.assertEqual(len(rows), 1)
+            self.assertGreaterEqual(rows[0]["views"], 200)
+
+    def test_export_telemetry_writes_json_and_csv(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            telemetry = {"summary": {"rows_final": 2, "api_search_calls": 1}}
+            out_path = export_telemetry(telemetry, Path(tmpdir) / "run.json")
+            self.assertTrue(out_path.exists())
+            self.assertTrue(out_path.with_suffix(".csv").exists())
 
 
 if __name__ == "__main__":
