@@ -167,5 +167,100 @@ Le fichier `prompts/prompt_template.json` doit rester un alias fonctionnel.
 - Preview `head(5)` des sorties.
 
 ---
+## 10. Trend Validation v1 (Interface Layer Module)
+## 10.1 Objectif
 
+Trend Validation v1 est un module minimal destiné à fournir :
+
+Un score simplifié (étoiles) d’un lien partagé.
+
+Une suggestion d’amélioration ou de transformation du contenu.
+
+Une aide décisionnelle pour créateur débutant.
+
+Ce module ne remplace pas le pipeline principal.
+Il agit comme couche d’interprétation légère destinée à une future interface utilisateur.
+
+## 10.2 Position architecturale
+
+Trend Validation v1 :
+
+Consomme les sorties du pipeline existant.
+
+Ne modifie pas master_pipeline.py.
+
+Ne modifie pas les statuts contrôlés.
+
+Ne modifie pas les schémas CSV contractuels.
+
+Ne crée aucune nouvelle base de données.
+
+Il peut lire :
+
+ready_to_generate.csv
+
+prompts_ready.csv
+
+Mais ne doit jamais les altérer.
+
+## 10.3 Scope fonctionnel
+
+Entrée :
+
+Un lien partagé par l’utilisateur.
+
+Processus :
+
+Recherche correspondance dans données existantes.
+
+Analyse métadonnées existantes.
+
+Génère :
+
+trend_score (1 à 5 étoiles)
+
+trend_reason
+
+improvement_prompt
+
+Sortie :
+
+JSON simple destiné à une future UI.
+
+## 10.4 Contraintes
+
+Moins de 400 lignes.
+
+Python 3.13.
+
+Réutilisation modules existants si pertinent.
+
+Aucun recalcul massif de scoring.
+
+Aucun système asynchrone.
+
+Pas de dépendance externe supplémentaire.
+
+## 10.5 Évolution future
+
+Trend Validation v1 est conçu comme :
+
+Prototype pour interface utilisateur.
+
+Couche de validation rapide.
+
+Une future V2 pourrait :
+
+Introduire pondération avancée.
+
+Connecter API temps réel.
+
+Ajouter métriques externes.
+
+Mais ces évolutions seront versionnées explicitement.
+
+## 10.6 Principe fondamental
+
+Trend Validation v1 ne modifie pas le moteur principal.
+Il reste un adaptateur externe aligné avec la philosophie “Content is Content”.
 **Statut projet**: Stable V1+, prêt pour préparation de contenu assistée IA.
